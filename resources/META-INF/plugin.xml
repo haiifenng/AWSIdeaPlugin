@@ -1,0 +1,87 @@
+<idea-plugin>
+    <id>com.actionsoft.awslibraraymgr</id>
+    <name>AWS Developer Plugin</name>
+    <version>2.2</version>
+    <vendor email="zhanghf@actionsoft.com.cn" url="http://www.actionsoft.com.cn">炎黄盈动</vendor>
+
+    <description><![CDATA[
+        <b>AWS开发者插件</b><br/>
+        作者：<br/>
+        Haiifenng,Willard<br/>
+        功能：<br/>
+        <li>自动创建或者更新AWS需要的Libraries</li>
+        <p style="padding-left: 12px;">在Project Settings中的Libraries中自动创建名为“aws_lib”的库，同时搜索名称为“release”的Module，自动加载bin\jdbc以及bin\lib目录下的jar包，达到自动刷新AWS运行环境库文件的目的。</p>
+        <p style="padding-left: 12px;">菜单入口：Tools--AWS Libraries 更新</p>
+        <li>根据当前Modules创建Artifacts</li>
+        <p style="padding-left: 12px;">方便打包，App的Module的jar包会自动输出到App相应目录。</p>
+        <p style="padding-left: 12px;">菜单入口：Tools--AWS Artifacts 更新</p>
+        <li>更新Modules的Dependencies</li>
+        <p style="padding-left: 12px;">方便管理Module间的依赖关系。</p>
+        <p style="padding-left: 12px;">菜单入口：Tools--AWS Dependencies 更新</p>
+        <br>
+        <em>注意：选择菜单操作之前，首先在Project中创建名称为“release”的Module</em>
+        <li>暂停AWS App</li>
+        <p style="padding-left: 12px;">在Settings-Other Settings-AWS Suspend App中，维护一个暂停AWS App的列表。</p>
+        <p style="padding-left: 12px;">如果本地AWS App的暂停状态和设置不一样，列表中的“应用名称”列会变为红色背景，点击apply或ok按钮会应用当前设置到本地AWS App。</p>
+    ]]></description>
+
+    <change-notes><![CDATA[
+        2.2：2018.01.07，一系列的优化。<br/>
+        2.1：2017.12.24，优化通过AWS App文件夹创建Module后自动添加lib目录的三方jar包，增加web包和upgrade包的Libraries。<br/>
+        2.0：2017.09.23，优化操作后的通知提示方式。<br/>
+        1.9：2017.05.20，增加通过AWS App文件夹创建Module。优化AWS Suspend App在Mac OS不能加载的问题。<br/>
+        1.8：2017.05.18，优化Suspend AWS App自动启动的细节<br/>
+		1.7：2017.05.17，增加Suspend AWS App自动启动的功能<br/>
+        1.6：2017.05.07，增加更新Dependencies的功能<br/>
+        1.5：2017.03.01，更新Libraries的时候，排除Web资源的Module源码<br/>
+        1.4：2017.02.09，修复创建Artifact时候命名以及路径的问题，仅创建需要打包的Artifact<br/>
+        1.3：2017.01.17，更新Libraries的时候，将对应Module的jar包排除<br/>
+        1.2：2017.01.16，自动根据当前的Modules创建Artifacts<br/>
+        1.1：2017.01.13，在Libraries中增加对应Module的Source目录<br/>
+        1.0：2017.01.07，初始版本
+    ]]>
+    </change-notes>
+
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
+    <idea-version since-build="145.0"/>
+
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+         on how to target different products -->
+    <!-- uncomment to enable plugin in all products
+    <depends>com.intellij.modules.lang</depends>
+    -->
+
+    <extensions defaultExtensionNs="com.intellij">
+		<!--<projectService serviceImplementation="com.dubreuia.model.Storage"/>-->
+        <projectConfigurable displayName="AWS Suspend App" id="AWSCustomManifestPlugin.Config" instance="com.actionsoft.ideaplugins.manifest.ui.SuspendAppConfigurable"/>
+    </extensions>
+
+	<actions>
+        <action id="AWSLibraryMgrPlugin.Menu"
+                class="com.actionsoft.ideaplugins.libraray.AWSLibraryRefreshAction"
+                text="AWS Libraries 更新" description="AWS Libraries 更新">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </action>
+        <action id="AWSArtifactPlugin.Menu"
+                class="com.actionsoft.ideaplugins.artifact.AWSArtifactRefreshAction"
+                text="AWS Artifacts 更新" description="AWS Artifacts 更新">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </action>
+        <action id="AWSDependenciesPlugin.Menu"
+                class="com.actionsoft.ideaplugins.dependencies.AWSModuleDependenciesAction"
+                text="AWS Dependencies 更新" description="AWS Dependencies 更新">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </action>
+        <action id="CreateModuleByAWSApp" class="com.actionsoft.ideaplugins.appsmodule.CreateModulesAction" text="Create AWS App Module">
+			<add-to-group group-id="ProjectViewPopupMenuModifyGroup" anchor="before" relative-to-action="$Delete"/>
+		</action>
+        <action id="LinkApp" class="com.actionsoft.ideaplugins.link.LinkAppAction" text="Link App">
+            <add-to-group group-id="ProjectViewPopupMenuModifyGroup" anchor="before" relative-to-action="$Delete"/>
+        </action>
+        <action id="CreateModuleAndLinkApps" class="com.actionsoft.ideaplugins.appsmodule.CreateModuleAndLinkAppAction" text="Create Module And Link">
+            <add-to-group group-id="ProjectViewPopupMenuModifyGroup" anchor="before" relative-to-action="$Delete"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt C"/>
+        </action>
+    </actions>
+
+</idea-plugin>
