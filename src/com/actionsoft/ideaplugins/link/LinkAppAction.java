@@ -37,10 +37,10 @@ public class LinkAppAction extends AnAction {
 		String targetFile = releaseModule.getModuleFile().getParent().getPath() + "/apps/install/" + file.getName();
 		String sourceFile = file.getPath();
 		String cmd = "";
-		if (isMacOSX()) {
+		if (PluginUtil.isMacOSX()) {
 			cmd = "ln -s " + sourceFile + " " + targetFile;
 			link(cmd);
-		} else if (isWindows()) {
+		} else if (PluginUtil.isWindows()) {
 			sourceFile = sourceFile.replaceAll("/", "\\\\");
 			targetFile = targetFile.replaceAll("/", "\\\\");
 			cmd = "cmd.exe /c mklink /j " + targetFile + " " + sourceFile;
@@ -60,20 +60,6 @@ public class LinkAppAction extends AnAction {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-
-	private String OS = System.getProperty("os.name").toLowerCase();
-
-	protected boolean isLinux() {
-		return OS.indexOf("linux") >= 0;
-	}
-
-	protected boolean isMacOSX() {
-		return OS.indexOf("mac") >= 0 && OS.indexOf("os") > 0 && OS.indexOf("x") > 0;
-	}
-
-	protected boolean isWindows() {
-		return OS.indexOf("windows") >= 0;
 	}
 
 	@Override

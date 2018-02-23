@@ -35,6 +35,20 @@ import com.intellij.util.Processor;
  * Created by Hayfeng on 2017.01.16.
  */
 public class PluginUtil {
+	private static String OS = System.getProperty("os.name").toLowerCase();
+
+	public static boolean isLinux() {
+		return OS.indexOf("linux") >= 0;
+	}
+
+	public static boolean isMacOSX() {
+		return OS.indexOf("mac") >= 0 && OS.indexOf("os") > 0 && OS.indexOf("x") > 0;
+	}
+
+	public static boolean isWindows() {
+		return OS.indexOf("windows") >= 0;
+	}
+
 	@Nullable
 	public static Module getReleaseModule(Project project, boolean isMsg) {
 		Module releaseModule = ModuleManager.getInstance(project).findModuleByName("release");
