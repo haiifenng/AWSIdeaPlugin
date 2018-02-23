@@ -9,7 +9,7 @@ import java.util.List;
 
 import org.jetbrains.annotations.Nullable;
 
-import com.actionsoft.ideaplugins.libraray.FileSuffixFilter;
+import com.actionsoft.ideaplugins.library.FileSuffixFilter;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.openapi.actionSystem.AnAction;
