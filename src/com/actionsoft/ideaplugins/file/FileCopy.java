@@ -20,7 +20,6 @@ public class FileCopy {
 
 	public void copyToDesktop(VirtualFile file) {
 		String userHome = System.getProperty("user.home");
-		System.out.println(userHome);
 		String target = userHome + fileSeparator + "Desktop";
 		Path targetPath = Paths.get(target);
 		boolean exists = Files.exists(targetPath, new LinkOption[] { LinkOption.NOFOLLOW_LINKS });
