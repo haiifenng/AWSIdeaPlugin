@@ -51,14 +51,9 @@
     <depends>com.intellij.modules.lang</depends>
     -->
 
-    <extensions defaultExtensionNs="com.intellij">
-		<!--<projectService serviceImplementation="com.dubreuia.model.Storage"/>-->
-        <projectConfigurable displayName="AWS Suspend App" id="AWSCustomManifestPlugin.Config" instance="com.actionsoft.ideaplugins.manifest.ui.SuspendAppConfigurable"/>
-    </extensions>
-
 	<actions>
         <action id="AWSLibraryMgrPlugin.Menu"
-                class="com.actionsoft.ideaplugins.libraray.AWSLibraryRefreshAction"
+                class="com.actionsoft.ideaplugins.library.AWSLibraryRefreshAction"
                 text="AWS Libraries 更新" description="AWS Libraries 更新">
             <add-to-group group-id="ToolsMenu" anchor="last"/>
         </action>

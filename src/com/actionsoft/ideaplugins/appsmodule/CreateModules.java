@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.Collection;
 
 import com.actionsoft.ideaplugins.dependencies.AWSModuleDependencies;
-import com.actionsoft.ideaplugins.libraray.AWSLibraryRefresh;
+import com.actionsoft.ideaplugins.library.AWSLibraryRefresh;
 import com.actionsoft.ideaplugins.util.PluginUtil;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.module.ModifiableModuleModel;
