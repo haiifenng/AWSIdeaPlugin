@@ -18,6 +18,11 @@ import com.intellij.openapi.vfs.VirtualFile;
 public class FileCopy {
 	private String fileSeparator = System.getProperty("file.separator");
 
+	/**
+	 * 复制文件到桌面
+	 *
+	 * @param file
+	 */
 	public void copyToDesktop(VirtualFile file) {
 		String userHome = System.getProperty("user.home");
 		String target = userHome + fileSeparator + "Desktop";
