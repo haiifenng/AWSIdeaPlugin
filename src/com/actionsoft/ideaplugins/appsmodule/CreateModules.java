@@ -31,6 +31,12 @@ public class CreateModules {
 		this.project = project;
 	}
 
+	/**
+	 * 根据右键选择file创建module
+	 *
+	 * @param file
+	 * @return
+	 */
 	public String createModule(VirtualFile file) {
 		if (file == null) {
 			return "";
