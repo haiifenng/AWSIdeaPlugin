@@ -1,7 +1,7 @@
 # AWS开发者插件
 
 作者：
-Haiifenng,Willard
+**Haiifenng**,**Willard**
 
 ## 使用方法
 
