@@ -26,7 +26,8 @@
     ]]></description>
 
     <change-notes><![CDATA[
-        2.2：2018.01.07，一系列的优化。<br/>
+        2.2.1：2018.03.28，添加菜单，一键更新AWS库文件和依赖。<br/>
+        2.2.0：2018.01.07，一系列的优化。<br/>
         2.1：2017.12.24，优化通过AWS App文件夹创建Module后自动添加lib目录的三方jar包，增加web包和upgrade包的Libraries。<br/>
         2.0：2017.09.23，优化操作后的通知提示方式。<br/>
         1.9：2017.05.20，增加通过AWS App文件夹创建Module。优化AWS Suspend App在Mac OS不能加载的问题。<br/>
@@ -65,6 +66,11 @@
         <action id="AWSDependenciesPlugin.Menu"
                 class="com.actionsoft.ideaplugins.dependencies.AWSModuleDependenciesAction"
                 text="AWS Dependencies 更新" description="AWS Dependencies 更新">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </action>
+        <action id="AWSLibAndDependPlugin.Menu"
+                class="com.actionsoft.ideaplugins.tools.AWSLibAndDependRefreshAction"
+                text="AWS 库和依赖更新" description="AWS 库和依赖更新">
             <add-to-group group-id="ToolsMenu" anchor="last"/>
         </action>
         <action id="CreateModuleByAWSApp" class="com.actionsoft.ideaplugins.appsmodule.CreateModulesAction" text="Create AWS App Module">

@@ -2,6 +2,7 @@ package com.actionsoft.ideaplugins.dependencies;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -10,6 +11,7 @@ import com.actionsoft.ideaplugins.util.PluginUtil;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleManager;
+import com.intellij.openapi.module.ModuleUtil;
 import com.intellij.openapi.module.StdModuleTypes;
 import com.intellij.openapi.module.impl.scopes.ModuleWithDependenciesScope;
 import com.intellij.openapi.project.Project;
@@ -21,10 +23,14 @@ import com.intellij.openapi.roots.libraries.Library;
 import com.intellij.openapi.roots.libraries.LibraryTable;
 import com.intellij.openapi.roots.libraries.LibraryTablesRegistrar;
 import com.intellij.openapi.ui.Messages;
+import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.util.Processor;
 
 /**
- * Created by Hayfeng on 2017.05.07.
+ * Module的依赖更新
+ *
+ * @author Hayfeng
+ * @date 2017.05.07
  */
 public class AWSModuleDependencies {
 	private Project project;
@@ -33,6 +39,36 @@ public class AWSModuleDependencies {
 		this.project = project;
 	}
 
+	/**
+	 * 更新当前Project的所有Module的依赖，主入口
+	 *
+	 * @return
+	 */
+	public String updateDependencies() {
+		Collection<Module> modules = ModuleUtil.getModulesOfType(project, StdModuleTypes.JAVA);
+		StringBuilder message = new StringBuilder();
+		AWSModuleDependencies awsModuleDependencies = new AWSModuleDependencies(project);
+		for (Module module : modules) {
+			String msg = awsModuleDependencies.updateDependencies(module);
+			if (!StringUtil.isEmpty(msg)) {
+				message.append(msg).append("\n");
+			}
+		}
+
+		if (!StringUtil.isEmpty(message)) {
+			message.setLength(message.toString().length() - 1);
+			return String.format("更新了以下Module：\n%s", message.toString());
+		} else {
+			return "没有需要更新的Module";
+		}
+	}
+
+	/**
+	 * 更新指定的module的依赖
+	 *
+	 * @param module
+	 * @return
+	 */
 	public String updateDependencies(Module module) {
 		if (PluginUtil.isExcludeModule(module.getName())) {
 			return "";
