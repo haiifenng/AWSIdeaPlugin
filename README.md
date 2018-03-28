@@ -15,6 +15,7 @@
 * 同时，可以一键更新AWS的库和依赖文件
 
 > 菜单入口：`Tools`-`AWS Libraries 更新`
+
 > 菜单入口：`Tools`-`AWS 库和依赖更新`
 
 ### 根据当前Modules创建Artifacts
