@@ -8,15 +8,31 @@
 下载[AWSIdeaPlugin.zip](https://github.com/haiifenng/AWSIdeaPlugin/releases/download/v2.2.1/AWSIdeaPlugin.zip)文件，在IDEA中，打开`Preferences`，点击左侧`Plugins`，点击右侧下方`Install plugin form disk...`，然后选择刚才下载的文件，根据提示重启IDEA。
 
 ## 功能
-### 自动创建或者更新AWS需要的Libraries
+### 创建更新AWS需要的Libraries
 
-* 在Project Settings中的Libraries中自动创建名为`aws_lib`的库，同时搜索名称为“release”的Module，自动加载bin\jdbc以及bin\lib目录下的jar包，自动刷新AWS运行环境库文件。
+* 在`Project Settings`中的`Libraries`中自动创建名为`aws_lib`的库，同时搜索名称为“release”的Module，自动加载bin\jdbc以及bin\lib目录下的jar包，自动刷新AWS运行环境库文件。
 
 * 同时，可以一键更新AWS的库和依赖文件
 
 > 菜单入口：`Tools`-`AWS Libraries 更新`
 
 > 菜单入口：`Tools`-`AWS 库和依赖更新`
+
+### AWS应用快速管理
+
+#### 应用文件夹快速创建Module
+
+AWS中，创建好应用之后，如果需要针对应用进行编码操作，在对应的应用文件夹上面点右键，选择`Create Module 'XXX'`，菜单会根据选择的文件夹显示具体的Module名称。创建好Module之后，插件会自动将AWS运行库文件和依赖更新处理。
+
+#### `apps`的资源快速软连接
+
+AWS资源使用新的管理方式后，App的资源代码使用独立的Git库管理，和release分开了，插件提供了两种菜单：
+* `Create Module And Link` ：将该App资源创建Module，并且使用软连接的形式部署到release资源中
+* `Link App` ：仅仅使用软连接的形式部署到release资源中，方便使用该App。如果已经软连接，则会显示Already Linked。
+
+**限制条件：**
+
+需要存在名称为`apps`的Module，该Module是所有App的资源文件
 
 ### 根据当前Modules创建Artifacts
 
