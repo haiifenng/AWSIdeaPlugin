@@ -16,6 +16,7 @@
 package com.actionsoft.ideaplugins.tools;
 
 import com.actionsoft.ideaplugins.dependencies.AWSModuleDependenciesAction;
+import com.actionsoft.ideaplugins.library.AWSLibraryRefreshAction;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 
@@ -26,10 +27,10 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
  *
  * @author zhanghf
  */
-public class AWSLibAndDependRefreshAction extends AnAction {
+public class AWSLibraryAndDependRefreshAction extends AnAction {
 	@Override
 	public void actionPerformed(AnActionEvent anActionEvent) {
-		AWSLibAndDependRefreshAction lib = new AWSLibAndDependRefreshAction();
+		AWSLibraryRefreshAction lib = new AWSLibraryRefreshAction();
 		lib.actionPerformed(anActionEvent);
 
 		AWSModuleDependenciesAction depend = new AWSModuleDependenciesAction();

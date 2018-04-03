@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com-actionsoft-aws-idea-plugin</id>
     <name>AWS Developer Plugin</name>
-    <version>2.2</version>
+    <version>2.2.1</version>
     <vendor email="zhanghf@actionsoft.com.cn" url="http://www.actionsoft.com.cn">北京炎黄盈动科技发展有限责任公司</vendor>
 
     <description><![CDATA[
@@ -69,7 +69,7 @@
             <add-to-group group-id="ToolsMenu" anchor="last"/>
         </action>
         <action id="AWSLibAndDependPlugin.Menu"
-                class="com.actionsoft.ideaplugins.tools.AWSLibAndDependRefreshAction"
+                class="com.actionsoft.ideaplugins.tools.AWSLibraryAndDependRefreshAction"
                 text="AWS 库和依赖更新" description="AWS 库和依赖更新">
             <add-to-group group-id="ToolsMenu" anchor="last"/>
         </action>
