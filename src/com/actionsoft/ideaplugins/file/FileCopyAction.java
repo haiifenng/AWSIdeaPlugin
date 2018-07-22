@@ -9,9 +9,11 @@ import com.intellij.openapi.vfs.VirtualFile;
 public class FileCopyAction extends AnAction {
 	@Override
 	public void actionPerformed(AnActionEvent anActionEvent) {
-		VirtualFile file = DataKeys.VIRTUAL_FILE.getData(anActionEvent.getDataContext());
-		FileCopy fc = new FileCopy();
-		fc.copyToDesktop(file);
+		VirtualFile[] data = DataKeys.VIRTUAL_FILE_ARRAY.getData(anActionEvent.getDataContext());
+		for (VirtualFile file : data) {
+			FileCopy fc = new FileCopy();
+			fc.copyToDesktop(file);
+		}
 	}
 
 	@Override
