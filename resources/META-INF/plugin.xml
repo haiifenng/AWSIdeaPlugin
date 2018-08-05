@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com-actionsoft-aws-idea-plugin</id>
     <name>AWS Developer Plugin</name>
-    <version>2.2.1</version>
+    <version>2.2.2</version>
     <vendor email="zhanghf@actionsoft.com.cn" url="http://www.actionsoft.com.cn">北京炎黄盈动科技发展有限责任公司</vendor>
 
     <description><![CDATA[
@@ -26,6 +26,7 @@
     ]]></description>
 
     <change-notes><![CDATA[
+        2.2.2：2018.08.05，优化AWS Suspend App的功能。<br/>
         2.2.1：2018.03.28，添加菜单，一键更新AWS库文件和依赖。<br/>
         2.2.0：2018.01.07，一系列的优化。<br/>
         2.1：2017.12.24，优化通过AWS App文件夹创建Module后自动添加lib目录的三方jar包，增加web包和upgrade包的Libraries。<br/>
@@ -52,7 +53,11 @@
     <depends>com.intellij.modules.lang</depends>
     -->
 
-	<actions>
+    <extensions defaultExtensionNs="com.intellij">
+        <projectConfigurable displayName="AWS Suspend App" id="AWSCustomManifestPlugin.Config" instance="com.actionsoft.ideaplugins.manifest.ui.SuspendAppConfigurable"/>
+    </extensions>
+
+    <actions>
         <action id="AWSLibraryMgrPlugin.Menu"
                 class="com.actionsoft.ideaplugins.library.AWSLibraryRefreshAction"
                 text="AWS Libraries 更新" description="AWS Libraries 更新">

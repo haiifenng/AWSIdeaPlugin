@@ -11,7 +11,6 @@ import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Locale;
-
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -42,7 +41,8 @@ import com.intellij.uiDesigner.core.GridLayoutManager;
  */
 public class SuspendAppConfigurable implements Configurable {
 	public static Project currentProject = null;
-	public static boolean isModified;//是否修改了值
+	//是否修改了值
+	public static boolean isModified;
 
 	public SuspendAppConfigurable(Project project) {
 		isModified = false;
@@ -116,7 +116,6 @@ public class SuspendAppConfigurable implements Configurable {
 			@Override
 			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 				Component cell = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-				System.out.println(value);
 				if ("自启动".equals(value)) {
 					cell.setBackground(new Color(77, 190, 180));
 					cell.setForeground(Color.WHITE);
@@ -139,7 +138,8 @@ public class SuspendAppConfigurable implements Configurable {
 				if (column == 3) {
 					AppListTableModel tableModel = (AppListTableModel) appListTable.getModel();
 					Boolean value = (Boolean) tableModel.getValueAt(row, column);
-					tableModel.setValueAt(value, row, column);//点击checkbox已经修改了值，此处触发一下fireTableCellUpdated
+					//点击checkbox已经修改了值，此处触发一下fireTableCellUpdated
+					tableModel.setValueAt(value, row, column);
 				}
 			}
 		};
@@ -177,11 +177,6 @@ public class SuspendAppConfigurable implements Configurable {
 							AppListTableModel tableModel = (AppListTableModel) appListTable.getModel();
 							Boolean value = (Boolean) tableModel.getValueAt(rows[i], 3);
 							tableModel.setValueAt(new Boolean(!value), rows[i], 3);
-//							if (value) {
-//								tableModel.setValueAt(new Boolean(false), rows[i], 3);
-//							} else {
-//								tableModel.setValueAt(new Boolean(true), rows[i], 3);
-//							}
 						}
 					}
 				}

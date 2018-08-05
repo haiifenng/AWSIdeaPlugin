@@ -54,21 +54,8 @@ public class AppListTableModel extends AbstractTableModel {
 			File installDir = new File(installPath);
 
 			String[] appDirNames = null;
-//			Arrays.sort(appDirNames);
-			//按照_bpm.platform、_bpm.portal、_bpm.coe排序
-//			String[] manualSorts = new String[] { "_bpm.platform", "_bpm.portal", "_bpm.coe" };
-//			for (int i = manualSorts.length - 1; i >= 0; i--) {
-//				String manualSort = manualSorts[i];
-//				if (appDirNameList.contains(manualSort)) {
-//					int tmpIndex = appDirNameList.indexOf(manualSort);
-//					String tmpAppId = appDirNameList.get(0);
-//					appDirNames[0] = manualSort;
-//					appDirNames[tmpIndex] = tmpAppId;
-//				}
-//			}
-			List<String> appDirNameList = getAppDirs(installDir);
+			List<String> appDirNameList = PluginUtil.getAppDirs(installDir);
 			Collections.sort(appDirNameList);
-//			appDirNameList.addAll(0,manualSorts);
 			appDirNames = appDirNameList.toArray(new String[]{});
 
 			Object[][] values1 = new Object[appDirNames.length][];
@@ -88,7 +75,8 @@ public class AppListTableModel extends AbstractTableModel {
 					Element root = doc.getRootElement();
 					Object[] value = new Object[4];
 					value[0] = appDirName;
-					value[2] = "自启动";//suspend default false
+					//suspend default false
+					value[2] = "自启动";
 					if (suspendedAppIdList.contains(appDirName)) {
 						value[3] = new Boolean(true);
 					} else {
@@ -138,20 +126,6 @@ public class AppListTableModel extends AbstractTableModel {
 				}
 			}
 		}
-	}
-
-	private List<String> getAppDirs(File installDir) {
-		List<String> list = new ArrayList<>();
-		File[] files = installDir.listFiles();
-		for (File file : files) {
-			if (file.getName().equals(".DS_Store")){
-				continue;
-			}
-			if (file.isDirectory() && !file.getName().startsWith("_bpm")){
-				list.add(file.getName());
-			}
-		}
-		return list;
 	}
 
 	public void fireColorModified() {

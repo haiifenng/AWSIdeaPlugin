@@ -196,4 +196,20 @@ public class PluginUtil {
 		List<String> strings = Arrays.asList(excludes);
 		return strings.contains(name);
 	}
+
+	public static List<String> getAppDirs(File installDir) {
+		List<String> list = new ArrayList<>();
+		File[] files = installDir.listFiles();
+		for (File file : files) {
+			if (file.getName().equals(".DS_Store")) {
+				continue;
+			}
+			if (file.isDirectory() && !file.getName().startsWith("_bpm")) {
+				list.add(file.getName());
+			}
+		}
+		return list;
+	}
+
+
 }

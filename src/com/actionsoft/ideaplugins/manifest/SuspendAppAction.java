@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -37,8 +38,11 @@ public class SuspendAppAction {
 		try {
 			File installDir = new File(installPath);
 
-			String[] appDirNames = installDir.list();
-			Arrays.sort(appDirNames);
+			String[] appDirNames = null;
+			List<String> appDirNameList = PluginUtil.getAppDirs(installDir);
+			Collections.sort(appDirNameList);
+			appDirNames = appDirNameList.toArray(new String[] {});
+
 			String[] suspendedAppIds = PropertiesComponent.getInstance().getValues("suspendAppIds");
 			List<String> suspendedAppIdList = new ArrayList<>();
 			if (suspendedAppIds != null) {
@@ -72,7 +76,7 @@ public class SuspendAppAction {
 						} else if (!suspendedAppIdList.contains(appId) && isSuspend) {
 							Map<String, String> values = new HashMap<>();
 							values.put("suspend", String.valueOf(false));
-							saveKeyValue(new File(xmlFile), values);
+							removeKeyValue(new File(xmlFile), values);
 						}
 
 					} catch (Exception e) {
@@ -94,6 +98,19 @@ public class SuspendAppAction {
 			for (String key : values.keySet()) {
 				Element node = getElement(doc, key);
 				node.setText(values.get(key));
+			}
+			saveXML(doc, appConfigFile);
+		} catch (Exception e) {
+			throw e;
+		}
+	}
+
+	public final void removeKeyValue(File appConfigFile, Map<String, String> values) throws Exception {
+		try {
+			Document doc = getDocument(appConfigFile);
+			for (String key : values.keySet()) {
+				Element node = getElement(doc, key);
+				node.getParent().remove(node);
 			}
 			saveXML(doc, appConfigFile);
 		} catch (Exception e) {
