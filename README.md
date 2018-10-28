@@ -5,7 +5,7 @@
 
 ## 使用方法
 
-访问[最新版本](https://github.com/ShareX/ShareX/releases/latest/)，下载AWSIdeaPlugin.zip文件，在IDEA中，打开`Preferences`，点击左侧`Plugins`，点击右侧下方`Install plugin form disk...`，然后选择刚才下载的文件，根据提示重启IDEA。
+访问[最新版本](https://github.com/haiifenng/AWSIdeaPlugin/releases/latest/)，下载AWSIdeaPlugin.zip文件，在IDEA中，打开`Preferences`，点击左侧`Plugins`，点击右侧下方`Install plugin form disk...`，然后选择刚才下载的文件，根据提示重启IDEA。
 
 ## 功能
 ### 创建更新AWS需要的Libraries
