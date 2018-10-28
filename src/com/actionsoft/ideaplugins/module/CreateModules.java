@@ -1,4 +1,4 @@
-package com.actionsoft.ideaplugins.appsmodule;
+package com.actionsoft.ideaplugins.module;
 
 import java.io.File;
 import java.util.Collection;

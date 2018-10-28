@@ -26,11 +26,32 @@
     ]]></description>
 
     <change-notes><![CDATA[
-        2.2.2：2018.08.05，优化AWS Suspend App的功能。<br/>
-        2.2.1：2018.03.28，添加菜单，一键更新AWS库文件和依赖。<br/>
-        2.2.0：2018.01.07，一系列的优化。<br/>
-        2.1：2017.12.24，优化通过AWS App文件夹创建Module后自动添加lib目录的三方jar包，增加web包和upgrade包的Libraries。<br/>
-        2.0：2017.09.23，优化操作后的通知提示方式。<br/>
+        2.2.3：2018.10.28
+        <ol>
+        <li>优化Git库的modules文件中可以直接右键创建Module。</li>
+        <li>优化可以批量创建符号/目录链接。创建后，自动刷新release/apps/install目录。</li>
+        </ol>
+        2.2.2：2018.08.05
+        <ol>
+        <li>优化AWS Suspend App的功能。</li>
+        </ol>
+        2.2.1：2018.03.28
+        <ol>
+        <li>添加菜单，一键更新AWS库文件和依赖。</li>
+        </ol>
+        2.2.0：2018.01.07
+        <ol>
+        <li>一系列的优化。</li>
+        </ol>
+        2.1：2017.12.24<br/>
+        <ol>
+        <li>优化通过AWS App文件夹创建Module后自动添加lib目录的三方jar包。</li>
+        <li>增加web包和upgrade包的Libraries。</li>
+        </ol>
+        2.0：2017.09.23
+        <ol>
+        <li>优化操作后的通知提示方式。</li>
+        </ol>
         1.9：2017.05.20，增加通过AWS App文件夹创建Module。优化AWS Suspend App在Mac OS不能加载的问题。<br/>
         1.8：2017.05.18，优化Suspend AWS App自动启动的细节<br/>
 		1.7：2017.05.17，增加Suspend AWS App自动启动的功能<br/>
@@ -78,13 +99,13 @@
                 text="AWS 库和依赖更新" description="AWS 库和依赖更新">
             <add-to-group group-id="ToolsMenu" anchor="last"/>
         </action>
-        <action id="CreateModuleByAWSApp" class="com.actionsoft.ideaplugins.appsmodule.CreateModulesAction" text="Create AWS App Module">
+        <action id="CreateModuleByAWSApp" class="com.actionsoft.ideaplugins.module.CreateModulesAction" text="Create AWS App Module">
 			<add-to-group group-id="ProjectViewPopupMenuModifyGroup" anchor="before" relative-to-action="$Delete"/>
 		</action>
         <action id="LinkApp" class="com.actionsoft.ideaplugins.link.LinkAppAction" text="Link App">
             <add-to-group group-id="ProjectViewPopupMenuModifyGroup" anchor="before" relative-to-action="$Delete"/>
         </action>
-        <action id="CreateModuleAndLinkApps" class="com.actionsoft.ideaplugins.appsmodule.CreateModuleAndLinkAppAction" text="Create Module And Link">
+        <action id="CreateModuleAndLinkApps" class="com.actionsoft.ideaplugins.module.CreateModuleAndLinkAppAction" text="Create Module And Link">
             <add-to-group group-id="ProjectViewPopupMenuModifyGroup" anchor="before" relative-to-action="$Delete"/>
             <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt C"/>
         </action>
