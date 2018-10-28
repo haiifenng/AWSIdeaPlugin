@@ -28,7 +28,7 @@
     <change-notes><![CDATA[
         2.2.3：2018.10.28
         <ol>
-        <li>优化Git库的modules文件中可以直接右键创建Module。</li>
+        <li>优化Git库的modules中的目录可以直接右键创建Module。</li>
         <li>优化可以批量创建符号/目录链接。创建后，自动刷新release/apps/install目录。</li>
         </ol>
         2.2.2：2018.08.05
