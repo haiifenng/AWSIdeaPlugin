@@ -5,7 +5,7 @@
 
 ## 使用方法
 
-下载[AWSIdeaPlugin.zip](https://github.com/haiifenng/AWSIdeaPlugin/releases/download/v2.2.1/AWSIdeaPlugin.zip)文件，在IDEA中，打开`Preferences`，点击左侧`Plugins`，点击右侧下方`Install plugin form disk...`，然后选择刚才下载的文件，根据提示重启IDEA。
+下载[AWSIdeaPlugin.zip](https://github.com/ShareX/ShareX/releases/latest/AWSIdeaPlugin.zip)文件，在IDEA中，打开`Preferences`，点击左侧`Plugins`，点击右侧下方`Install plugin form disk...`，然后选择刚才下载的文件，根据提示重启IDEA。
 
 ## 功能
 ### 创建更新AWS需要的Libraries
