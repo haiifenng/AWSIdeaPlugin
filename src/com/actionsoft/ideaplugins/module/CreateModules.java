@@ -52,11 +52,20 @@ public class CreateModules {
 		modifiableModule.setSdk(ProjectRootManager.getInstance(project).getProjectSdk());
 
 		ContentEntry contentEntry = modifiableModule.addContentEntry(file);
-		VirtualFile srcPath = LocalFileSystem.getInstance().refreshAndFindFileByIoFile(new File(file.getPath(), "src"));
-		if (srcPath != null) {
-			contentEntry.addSourceFolder(srcPath, false);
-		}
 
+		VirtualFile srcMainPath = LocalFileSystem.getInstance().refreshAndFindFileByIoFile(new File(file.getPath(), "src/main/java"));
+		VirtualFile srcTestPath = LocalFileSystem.getInstance().refreshAndFindFileByIoFile(new File(file.getPath(), "src/test/java"));
+		VirtualFile srcPath = LocalFileSystem.getInstance().refreshAndFindFileByIoFile(new File(file.getPath(), "src"));
+		if (srcMainPath != null && srcMainPath.exists()) {
+			contentEntry.addSourceFolder(srcMainPath, false);
+		} else {
+			if (srcPath != null && srcPath.exists()) {
+				contentEntry.addSourceFolder(srcPath, false);
+			}
+		}
+		if (srcTestPath != null && srcTestPath.exists()) {
+			contentEntry.addSourceFolder(srcTestPath, true);
+		}
 		ApplicationManager.getApplication().runWriteAction(new Runnable() {
 			@Override
 			public void run() {
@@ -72,12 +81,10 @@ public class CreateModules {
 		r.refreshAWSLibrary();
 		//更新所有Module的依赖
 		Collection<Module> modules = ModuleUtil.getModulesOfType(project, StdModuleTypes.JAVA);
-		StringBuilder message = new StringBuilder();
 		AWSModuleDependencies awsModuleDependencies = new AWSModuleDependencies(project);
 		for (Module m : modules) {
 			awsModuleDependencies.updateDependencies(m);
 		}
-
 		return moduleName;
 	}
 

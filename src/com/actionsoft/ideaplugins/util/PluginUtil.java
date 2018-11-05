@@ -187,7 +187,7 @@ public class PluginUtil {
 	}
 
 	public static boolean isExcludeModule(String name) {
-		String[] excludes = { "doc", "release", "aws-all", "aws", "apps", "aws-security", "aws-schema" };
+		String[] excludes = { "doc", "release", "aws-all", "aws", "apps", "web", "h5designer", "aws-security", "aws-schema" };
 		List<String> strings = Arrays.asList(excludes);
 		return strings.contains(name);
 	}

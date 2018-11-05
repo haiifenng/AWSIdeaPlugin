@@ -3,7 +3,6 @@ package com.actionsoft.ideaplugins.module;
 import com.actionsoft.ideaplugins.util.PluginUtil;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.actionSystem.DataKeys;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleManager;
@@ -17,7 +16,6 @@ public class CreateModulesAction extends AnAction {
 
 	@Override
 	public void actionPerformed(AnActionEvent e) {
-		DataContext dataContext = e.getDataContext();
 		VirtualFile[] data = DataKeys.VIRTUAL_FILE_ARRAY.getData(e.getDataContext());
 		if (data != null) {
 			StringBuilder message = new StringBuilder();
@@ -70,20 +68,6 @@ public class CreateModulesAction extends AnAction {
 			return;
 		}
 		if (filePath.contains(flag)) {
-			//			String appId = filePath.substring(filePath.indexOf(flag) + flag.length());
-			//			if (appId.contains("/")) {
-			//				//说明是子文件夹或文件
-			//				e.getPresentation().setVisible(false);
-			//			}
-			//			if (e.getPresentation().getText().equals("Create AWS App Module")) {
-			//				Module moduleByName = ModuleManager.getInstance(e.getProject()).findModuleByName(appId);
-			//				if (moduleByName != null) {
-			//					e.getPresentation().setVisible(false);
-			//				} else {
-			//					e.getPresentation().setText(String.format("Create Module '%s'", fileName));
-			//					e.getPresentation().setEnabledAndVisible(true);
-			//				}
-			//			}
 			checkName(e, flag, isMulti, file);
 		} else if (filePath.contains(flagAWS) && awsModule != null) {
 			checkName(e, flagAWS, isMulti, file);

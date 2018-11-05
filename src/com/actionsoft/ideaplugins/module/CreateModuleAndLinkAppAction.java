@@ -4,7 +4,6 @@ import com.actionsoft.ideaplugins.artifact.AWSArtifactRefresh;
 import com.actionsoft.ideaplugins.link.LinkAppAction;
 import com.actionsoft.ideaplugins.util.PluginUtil;
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.actionSystem.DataKeys;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleManager;
@@ -22,7 +21,6 @@ public class CreateModuleAndLinkAppAction extends LinkAppAction {
 
 	@Override
 	public void actionPerformed(AnActionEvent e) {
-		DataContext dataContext = e.getDataContext();
 		VirtualFile[] data = DataKeys.VIRTUAL_FILE_ARRAY.getData(e.getDataContext());
 		if (data != null) {
 			StringBuilder message = new StringBuilder();
