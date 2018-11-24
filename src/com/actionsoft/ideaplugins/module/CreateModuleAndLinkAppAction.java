@@ -80,7 +80,7 @@ public class CreateModuleAndLinkAppAction extends LinkAppAction {
 			e.getPresentation().setVisible(false);
 			return;
 		}
-		if (filePath.contains(flag) && appsModule != null) {
+		if (filePath.contains(flag) && appsModule != null && !filePath.contains("release/")) {
 			Module moduleByName = ModuleManager.getInstance(e.getProject()).findModuleByName(fileName);
 			if (moduleByName != null) {
 				e.getPresentation().setVisible(false);

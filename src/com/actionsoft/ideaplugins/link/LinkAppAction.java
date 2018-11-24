@@ -99,11 +99,7 @@ public class LinkAppAction extends AnAction {
 			e.getPresentation().setVisible(false);
 			return;
 		}
-		//		if (data.length > 1) {
-		//			e.getPresentation().setVisible(false);
-		//			return;
-		//		}
-		if (file.getPath().contains("/apps/install/")) {
+		if (file.getPath().contains("/apps/install/") || file.getPath().contains("release/")) {
 			e.getPresentation().setVisible(false);
 			return;
 		}
