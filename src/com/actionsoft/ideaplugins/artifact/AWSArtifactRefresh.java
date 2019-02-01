@@ -2,7 +2,7 @@ package com.actionsoft.ideaplugins.artifact;
 
 import java.util.Collection;
 
-import com.actionsoft.ideaplugins.util.PluginUtil;
+import com.actionsoft.ideaplugins.helper.PluginUtil;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleUtil;
@@ -19,7 +19,7 @@ import com.intellij.packaging.impl.artifacts.JarArtifactType;
 import com.intellij.packaging.impl.elements.ArchivePackagingElement;
 
 /**
- * Created by Hayfeng on 2017.01.16.
+ * Created by Haiifenng on 2017.01.16.
  */
 public class AWSArtifactRefresh {
 	private Project project;

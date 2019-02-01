@@ -17,15 +17,15 @@ import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
 
+import com.actionsoft.ideaplugins.helper.PluginUtil;
 import com.actionsoft.ideaplugins.manifest.ui.SuspendAppConfigurable;
-import com.actionsoft.ideaplugins.util.PluginUtil;
 import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.ui.Messages;
 
 /**
  * @author wangshibao
- *         Created on 2017-5-3
+ * Created on 2017-5-3
  */
 public class SuspendAppAction {
 
@@ -132,7 +132,6 @@ public class SuspendAppAction {
 		writer.write(doc);
 		writer.close();
 	}
-
 
 	private final Document getDocument(File configFile) throws Exception {
 		SAXReader saxreader = new SAXReader();

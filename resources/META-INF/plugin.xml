@@ -26,6 +26,12 @@
     ]]></description>
 
     <change-notes><![CDATA[
+        2.2.4：2019.02.01
+        <ol>
+        <li>优化更新依赖的时将无效的Module删除。</li>
+        <li>优化创建Module时的Module SDK使用Project SDK。</li>
+        <li>优化提示信息出现的位置。</li>
+        </ol>
         2.2.3：2018.11.05
         <ol>
         <li>优化Git库的modules中的目录可以直接右键创建Module。</li>
@@ -100,8 +106,8 @@
             <add-to-group group-id="ToolsMenu" anchor="last"/>
         </action>
         <action id="CreateModuleByAWSApp" class="com.actionsoft.ideaplugins.module.CreateModulesAction" text="Create AWS App Module">
-			<add-to-group group-id="ProjectViewPopupMenuModifyGroup" anchor="before" relative-to-action="$Delete"/>
-		</action>
+            <add-to-group group-id="ProjectViewPopupMenuModifyGroup" anchor="before" relative-to-action="$Delete"/>
+        </action>
         <action id="LinkApp" class="com.actionsoft.ideaplugins.link.LinkAppAction" text="Link App">
             <add-to-group group-id="ProjectViewPopupMenuModifyGroup" anchor="before" relative-to-action="$Delete"/>
         </action>

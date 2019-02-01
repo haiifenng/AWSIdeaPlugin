@@ -4,8 +4,8 @@ import java.io.File;
 import java.util.Collection;
 
 import com.actionsoft.ideaplugins.dependencies.AWSModuleDependencies;
+import com.actionsoft.ideaplugins.helper.PluginUtil;
 import com.actionsoft.ideaplugins.library.AWSLibraryRefresh;
-import com.actionsoft.ideaplugins.util.PluginUtil;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.module.ModifiableModuleModel;
 import com.intellij.openapi.module.Module;
@@ -21,7 +21,7 @@ import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 
 /**
- * Created by Hayfeng on 2017.05.19.
+ * Created by Haiifenng on 2017.05.19.
  */
 public class CreateModules {
 
@@ -48,8 +48,8 @@ public class CreateModules {
 		Module module = moduleManager.newModule(ideaModuleFile, StdModuleTypes.JAVA.getId());
 
 		final ModifiableRootModel modifiableModule = ModuleRootManager.getInstance(module).getModifiableModel();
-
 		modifiableModule.setSdk(ProjectRootManager.getInstance(project).getProjectSdk());
+		modifiableModule.inheritSdk();
 
 		ContentEntry contentEntry = modifiableModule.addContentEntry(file);
 

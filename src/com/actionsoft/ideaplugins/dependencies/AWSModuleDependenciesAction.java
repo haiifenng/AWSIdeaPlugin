@@ -1,11 +1,11 @@
 package com.actionsoft.ideaplugins.dependencies;
 
-import com.actionsoft.ideaplugins.util.PluginUtil;
+import com.actionsoft.ideaplugins.helper.PluginUtil;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 
 /**
- * Created by Hayfeng on 2017.05.07.
+ * Created by Haiifenng on 2017.05.07.
  */
 public class AWSModuleDependenciesAction extends AnAction {
 

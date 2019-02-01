@@ -1,6 +1,6 @@
 package com.actionsoft.ideaplugins.module;
 
-import com.actionsoft.ideaplugins.util.PluginUtil;
+import com.actionsoft.ideaplugins.helper.PluginUtil;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DataKeys;
@@ -10,7 +10,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 
 /**
  * 用于在release目录中的app文件夹创建module
- * Created by Hayfeng on 2017.05.19.
+ * Created by Haiifenng on 2017.05.19.
  */
 public class CreateModulesAction extends AnAction {
 
@@ -28,7 +28,7 @@ public class CreateModulesAction extends AnAction {
 			}
 			if (message.length() > 0) {
 				message.append("同时更新了AWS Libraries以及Module的依赖库");
-				PluginUtil.showNotification(e,message.toString());
+				PluginUtil.showNotification(e, message.toString());
 			}
 		}
 	}
@@ -93,6 +93,5 @@ public class CreateModulesAction extends AnAction {
 		}
 		e.getPresentation().setText(isMulti ? "Create Modules" : String.format("Create Module '%s'", fileName));
 	}
-
 
 }

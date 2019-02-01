@@ -1,8 +1,8 @@
 package com.actionsoft.ideaplugins.module;
 
 import com.actionsoft.ideaplugins.artifact.AWSArtifactRefresh;
+import com.actionsoft.ideaplugins.helper.PluginUtil;
 import com.actionsoft.ideaplugins.link.LinkAppAction;
-import com.actionsoft.ideaplugins.util.PluginUtil;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DataKeys;
 import com.intellij.openapi.module.Module;
@@ -14,8 +14,8 @@ import com.intellij.packaging.impl.artifacts.ArtifactManagerImpl;
 
 /**
  * 用于独立的apps中，创建module然后link到release目录中
- *
- * Created by Hayfeng on 2017.05.19.
+ * <p>
+ * Created by Haiifenng on 2017.05.19.
  */
 public class CreateModuleAndLinkAppAction extends LinkAppAction {
 
@@ -24,7 +24,7 @@ public class CreateModuleAndLinkAppAction extends LinkAppAction {
 		VirtualFile[] data = DataKeys.VIRTUAL_FILE_ARRAY.getData(e.getDataContext());
 		if (data != null) {
 			StringBuilder message = new StringBuilder();
-			Module releaseModule = PluginUtil.getReleaseModule(e.getProject(),true);
+			Module releaseModule = PluginUtil.getReleaseModule(e.getProject(), true);
 			if (releaseModule == null) {
 				return;
 			}

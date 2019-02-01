@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 
 /**
- * Created by Hayfeng on 2017.01.07.
+ * Created by Haiifenng on 2017.01.07.
  */
 public class FileSuffixFilter implements FilenameFilter {
 	private final String suffix;

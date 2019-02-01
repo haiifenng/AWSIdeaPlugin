@@ -1,4 +1,4 @@
-package com.actionsoft.ideaplugins.util;
+package com.actionsoft.ideaplugins.helper;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -32,7 +32,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.Processor;
 
 /**
- * Created by Hayfeng on 2017.01.16.
+ * Created by Haiifenng on 2017.01.16.
  */
 public class PluginUtil {
 	private static String OS = System.getProperty("os.name").toLowerCase();
@@ -80,6 +80,11 @@ public class PluginUtil {
 	public static void showNotification(AnActionEvent anActionEvent, String content) {
 		Notification notification = new Notification("AWS Developer Plugin", "AWS Developer Plugin", content, NotificationType.INFORMATION);
 		notification.notify(AnAction.getEventProject(anActionEvent));
+	}
+
+	public static void showNotification(Project project, String content) {
+		Notification notification = new Notification("AWS Developer Plugin", "AWS Developer Plugin", content, NotificationType.INFORMATION);
+		notification.notify(project);
 	}
 
 	public static List<File> findAllFileInPath(String rootPath, FilenameFilter filenameFilter) {
@@ -191,6 +196,7 @@ public class PluginUtil {
 		List<String> strings = Arrays.asList(excludes);
 		return strings.contains(name);
 	}
+
 	public static boolean isAWSWebModule(String name) {
 		String[] excludes = { "aws-infrastructure-web", "aws-node-wrapper", "aws-coe-web", "aws-api-client" };
 		List<String> strings = Arrays.asList(excludes);
@@ -210,6 +216,5 @@ public class PluginUtil {
 		}
 		return list;
 	}
-
 
 }

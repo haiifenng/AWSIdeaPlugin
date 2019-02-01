@@ -25,7 +25,7 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
  * <p>
  * Date: 2018/3/28 21:59
  *
- * @author zhanghf
+ * @author Haiifenng
  */
 public class AWSLibraryAndDependRefreshAction extends AnAction {
 	@Override

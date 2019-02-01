@@ -7,7 +7,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import com.actionsoft.ideaplugins.util.PluginUtil;
+import com.actionsoft.ideaplugins.helper.PluginConst;
+import com.actionsoft.ideaplugins.helper.PluginUtil;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleManager;
@@ -29,7 +30,7 @@ import com.intellij.util.Processor;
 /**
  * Module的依赖更新
  *
- * @author Hayfeng
+ * @author Haiifenng
  * @date 2017.05.07
  */
 public class AWSModuleDependencies {
@@ -83,11 +84,9 @@ public class AWSModuleDependencies {
 
 	private String updateCommonModuleDependencies(Module module) {
 		Module[] modules = ModuleManager.getInstance(project).getSortedModules();
-
 		ModuleWithDependenciesScope scope = (ModuleWithDependenciesScope) module.getModuleWithDependenciesAndLibrariesScope(true);
-
 		final ModifiableRootModel modifiableModel = ModuleRootManager.getInstance(module).getModifiableModel();
-
+		//		modifiableModel.clear();
 		for (Module tmpModule : modules) {
 			String moduleTypeName = tmpModule.getModuleTypeName();
 			if (!StdModuleTypes.JAVA.getId().equals(moduleTypeName)) {
@@ -106,7 +105,7 @@ public class AWSModuleDependencies {
 		}
 
 		final LibraryTable projectTable = LibraryTablesRegistrar.getInstance().getLibraryTable(project);
-		Library aws_lib = projectTable.getLibraryByName("aws_lib");
+		Library aws_lib = projectTable.getLibraryByName(PluginConst.PLUGIN_AWS_LIBRARY_NAME);
 		if (aws_lib == null) {//判断当前project有没有aws_lib这个库
 			Messages.showMessageDialog(project, "当前Project没有“aws_lib”的库，请使用“Tools->AWS Libraries 更新”菜单更新", "提示", Messages.getErrorIcon());
 		}
@@ -117,7 +116,7 @@ public class AWSModuleDependencies {
 		modifiableModel.orderEntries().forEach(new Processor<OrderEntry>() {
 			@Override
 			public boolean process(OrderEntry orderEntry) {
-				if ("aws_lib".equals(orderEntry.getPresentableName())) {
+				if (PluginConst.PLUGIN_AWS_LIBRARY_NAME.equals(orderEntry.getPresentableName())) {
 					awslibEntry.add(orderEntry);
 				} else {
 					moduleEntries.add(orderEntry);
@@ -126,8 +125,9 @@ public class AWSModuleDependencies {
 					if (((ModuleOrderEntryImpl) orderEntry).getModule() == null) {
 						invalidEntry.add(orderEntry);
 					} else {
-						Module module1 = ((ModuleOrderEntryImpl) orderEntry).getModule();
-						if (!StdModuleTypes.JAVA.getId().equals(module1.getModuleTypeName())) {
+						// 不是java工程、排除的、web工程都移走
+						Module tmp = ((ModuleOrderEntryImpl) orderEntry).getModule();
+						if (!StdModuleTypes.JAVA.getId().equals(tmp.getModuleTypeName()) || PluginUtil.isExcludeModule(tmp.getName()) || PluginUtil.isAWSWebModule(tmp.getName())) {
 							invalidEntry.add(orderEntry);
 						}
 					}
@@ -135,13 +135,15 @@ public class AWSModuleDependencies {
 				return true;
 			}
 		});
-		Collections.sort(moduleEntries, new Comparator<OrderEntry>() {//把module的排序一下
+		//把module排序一下
+		Collections.sort(moduleEntries, new Comparator<OrderEntry>() {
 			@Override
 			public int compare(OrderEntry o1, OrderEntry o2) {
 				return o1.getPresentableName().compareTo(o2.getPresentableName());
 			}
 		});
-		moduleEntries.addAll(awslibEntry);//aws_lib的保证放到最后
+		//aws_lib的保证放到最后
+		moduleEntries.addAll(awslibEntry);
 		modifiableModel.rearrangeOrderEntries(moduleEntries.toArray(new OrderEntry[0]));
 		//移除无效的module
 		if (invalidEntry.size() > 0) {
@@ -149,7 +151,7 @@ public class AWSModuleDependencies {
 				modifiableModel.removeOrderEntry(orderEntry);
 			}
 		}
-		if (module.getModuleFile()!=null && module.getModuleFile().getParent()!=null) {
+		if (module.getModuleFile() != null && module.getModuleFile().getParent() != null) {
 			PluginUtil.updateModuleLibraries(project, module, new String[] { module.getModuleFile().getParent().getPath() + "/lib" });
 		}
 
@@ -170,7 +172,7 @@ public class AWSModuleDependencies {
 	}
 
 	private String updateWebModuleDependencies(Module module) {
-		Module releaseModule = PluginUtil.getReleaseModule(project,true);
+		Module releaseModule = PluginUtil.getReleaseModule(project, true);
 		String webServerLib = releaseModule.getModuleFile().getParent().getPath() + "/webserver/lib";
 		String portal = "";
 		File webappsPath = new File(releaseModule.getModuleFile().getParent().getPath() + "/webserver/webapps");

@@ -3,7 +3,7 @@ package com.actionsoft.ideaplugins.link;
 import java.io.File;
 import java.io.IOException;
 
-import com.actionsoft.ideaplugins.util.PluginUtil;
+import com.actionsoft.ideaplugins.helper.PluginUtil;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DataContext;
@@ -14,7 +14,7 @@ import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 
 /**
- * Created by Hayfeng on 2017.05.19.
+ * Created by Haiifenng on 2017.05.19.
  */
 public class LinkAppAction extends AnAction {
 

@@ -6,7 +6,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import com.actionsoft.ideaplugins.util.PluginUtil;
+import com.actionsoft.ideaplugins.helper.PluginConst;
+import com.actionsoft.ideaplugins.helper.PluginUtil;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleUtil;
@@ -22,7 +23,7 @@ import com.intellij.openapi.vfs.JarFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 
 /**
- * Created by Hayfeng on 2017.01.07.
+ * Created by Haiifenng on 2017.01.07.
  */
 public class AWSLibraryRefresh {
 	private LibraryTable projectTable;
@@ -34,16 +35,16 @@ public class AWSLibraryRefresh {
 	}
 
 	public void refreshAWSLibrary() {
-		Module releaseModule = PluginUtil.getReleaseModule(project,true);
+		Module releaseModule = PluginUtil.getReleaseModule(project, true);
 		if (releaseModule == null) {
 			return;
 		}
-		Library aws_lib = projectTable.getLibraryByName("aws_lib");
+		Library aws_lib = projectTable.getLibraryByName(PluginConst.PLUGIN_AWS_LIBRARY_NAME);
 		final LibraryTable.ModifiableModel projectModel = this.projectTable.getModifiableModel();
 		if (aws_lib != null) {
 			projectModel.removeLibrary(aws_lib);
 		}
-		aws_lib = projectModel.createLibrary("aws_lib");
+		aws_lib = projectModel.createLibrary(PluginConst.PLUGIN_AWS_LIBRARY_NAME);
 
 		final Library.ModifiableModel newLibModel = aws_lib.getModifiableModel();
 
@@ -73,10 +74,10 @@ public class AWSLibraryRefresh {
 			if (PluginUtil.isExcludeModule(module.getName())) {
 				continue;
 			}
-			if(PluginUtil.isAWSWebModule(module.getName())){
+			if (PluginUtil.isAWSWebModule(module.getName())) {
 				continue;
 			}
-			if(module.getName().equals("aws-platform-upgrade")){
+			if (module.getName().equals("aws-platform-upgrade")) {
 				continue;
 			}
 			VirtualFile moduleFile = module.getModuleFile();
@@ -89,18 +90,6 @@ public class AWSLibraryRefresh {
 					}
 					newLibModel.addRoot(sourceRoot, OrderRootType.SOURCES);
 				}
-//				File src = new File(moduleFile.getParent().getPath() + "/java");
-//				if (!src.exists()) {
-//					src = new File(moduleFile.getParent().getPath() + "/src/main/java");
-//				}
-//				if (!src.exists()) {
-//					src = new File(moduleFile.getParent().getPath() + "/src");
-//				}
-//				String srcUrl = VirtualFileManager.constructUrl(LocalFileSystem.PROTOCOL, src.getPath());
-//				VirtualFile vFile = VirtualFileManager.getInstance().findFileByUrl(srcUrl);
-//				if (vFile != null) {
-//					newLibModel.addRoot(vFile, OrderRootType.SOURCES);
-//				}
 			}
 		}
 
@@ -109,6 +98,7 @@ public class AWSLibraryRefresh {
 			public void run() {
 				newLibModel.commit();
 				projectModel.commit();
+				PluginUtil.showNotification(project, "AWS Libraries 更新完毕");
 			}
 		});
 	}
@@ -135,6 +125,5 @@ public class AWSLibraryRefresh {
 		}
 		return list;
 	}
-
 
 }

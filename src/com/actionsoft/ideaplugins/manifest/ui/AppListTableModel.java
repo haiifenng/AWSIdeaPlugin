@@ -12,13 +12,13 @@ import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
-import com.actionsoft.ideaplugins.util.PluginUtil;
+import com.actionsoft.ideaplugins.helper.PluginUtil;
 import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.openapi.module.Module;
 
 /**
  * @author wangshibao
- *         Created on 2017-5-17
+ * Created on 2017-5-17
  */
 public class AppListTableModel extends AbstractTableModel {
 
@@ -56,7 +56,7 @@ public class AppListTableModel extends AbstractTableModel {
 			String[] appDirNames = null;
 			List<String> appDirNameList = PluginUtil.getAppDirs(installDir);
 			Collections.sort(appDirNameList);
-			appDirNames = appDirNameList.toArray(new String[]{});
+			appDirNames = appDirNameList.toArray(new String[] {});
 
 			Object[][] values1 = new Object[appDirNames.length][];
 			String[] suspendedAppIds = PropertiesComponent.getInstance().getValues("suspendAppIds");
