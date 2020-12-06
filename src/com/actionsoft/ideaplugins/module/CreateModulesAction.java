@@ -3,9 +3,10 @@ package com.actionsoft.ideaplugins.module;
 import com.actionsoft.ideaplugins.helper.PluginUtil;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.DataKeys;
+import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleManager;
+import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 
 /**
@@ -16,7 +17,7 @@ public class CreateModulesAction extends AnAction {
 
 	@Override
 	public void actionPerformed(AnActionEvent e) {
-		VirtualFile[] data = DataKeys.VIRTUAL_FILE_ARRAY.getData(e.getDataContext());
+		VirtualFile[] data = CommonDataKeys.VIRTUAL_FILE_ARRAY.getData(e.getDataContext());
 		if (data != null) {
 			StringBuilder message = new StringBuilder();
 			CreateModules createModules = new CreateModules(e.getProject());
@@ -35,8 +36,8 @@ public class CreateModulesAction extends AnAction {
 
 	@Override
 	public void update(AnActionEvent e) {
-		VirtualFile[] data = DataKeys.VIRTUAL_FILE_ARRAY.getData(e.getDataContext());
-		VirtualFile file = DataKeys.VIRTUAL_FILE.getData(e.getDataContext());
+		VirtualFile[] data = CommonDataKeys.VIRTUAL_FILE_ARRAY.getData(e.getDataContext());
+		VirtualFile file = CommonDataKeys.VIRTUAL_FILE.getData(e.getDataContext());
 		if (file == null) {
 			e.getPresentation().setVisible(false);
 		} else {
@@ -60,14 +61,30 @@ public class CreateModulesAction extends AnAction {
 		String flag = "/apps/install/";
 		String flagAWS = "/aws/modules/";
 		String flagSec = "/aws-security/modules/";
-		Module awsModule = ModuleManager.getInstance(e.getProject()).findModuleByName("aws");
-		Module secModule = ModuleManager.getInstance(e.getProject()).findModuleByName("aws-security");
 		String filePath = file.getPath();
+		Module awsModule = null;
+		try {
+			if (filePath.contains(flagAWS)) {
+				awsModule = ModuleManager.getInstance(e.getProject()).findModuleByName("aws");
+			}
+		} catch (Exception exception) {
+			exception.printStackTrace();
+		}
+		Module secModule = null;
+		try {
+			if (filePath.contains(flagSec)) {
+				secModule = ModuleManager.getInstance(e.getProject()).findModuleByName("aws-security");
+			}
+		} catch (Exception exception) {
+			exception.printStackTrace();
+		}
 		if (file.getName().startsWith("_bpm")) {
 			e.getPresentation().setVisible(false);
 			return;
 		}
-		if (filePath.contains(flag)) {
+		if (PluginUtil.checkManifestXml(file)) {
+			e.getPresentation().setText(isMulti ? "Create Modules" : getButtonName(file.getName()));
+		} else if (filePath.contains(flag)) {
 			checkName(e, flag, isMulti, file);
 		} else if (filePath.contains(flagAWS) && awsModule != null) {
 			checkName(e, flagAWS, isMulti, file);
@@ -90,8 +107,26 @@ public class CreateModulesAction extends AnAction {
 		if (moduleId.contains("/")) {
 			//说明是子文件夹或文件
 			e.getPresentation().setVisible(false);
+			return;
 		}
-		e.getPresentation().setText(isMulti ? "Create Modules" : String.format("Create Module '%s'", fileName));
+		e.getPresentation().setText(isMulti ? "Create Modules" : getButtonName(fileName));
+	}
+
+	private String getButtonName(String test) {
+		test = "'" + test + "'";
+		StringBuilder sb = new StringBuilder(40);
+		sb.append("Create Module").append(" ");
+		int length = test.length();
+		if (length > 23) {
+			if (StringUtil.startsWithChar(test, '\'')) {
+				sb.append("\'");
+			}
+			sb.append("...");
+			sb.append(test.substring(length - 20, length));
+		} else {
+			sb.append(test);
+		}
+		return sb.toString();
 	}
 
 }

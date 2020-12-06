@@ -74,6 +74,9 @@ public class AWSLibraryRefresh {
 			if (PluginUtil.isExcludeModule(module.getName())) {
 				continue;
 			}
+			if (PluginUtil.isExcludeModule(module)) {
+				continue;
+			}
 			if (PluginUtil.isAWSWebModule(module.getName())) {
 				continue;
 			}

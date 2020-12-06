@@ -4,7 +4,7 @@ import com.actionsoft.ideaplugins.artifact.AWSArtifactRefresh;
 import com.actionsoft.ideaplugins.helper.PluginUtil;
 import com.actionsoft.ideaplugins.link.LinkAppAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.DataKeys;
+import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -21,7 +21,7 @@ public class CreateModuleAndLinkAppAction extends LinkAppAction {
 
 	@Override
 	public void actionPerformed(AnActionEvent e) {
-		VirtualFile[] data = DataKeys.VIRTUAL_FILE_ARRAY.getData(e.getDataContext());
+		VirtualFile[] data = CommonDataKeys.VIRTUAL_FILE_ARRAY.getData(e.getDataContext());
 		if (data != null) {
 			StringBuilder message = new StringBuilder();
 			Module releaseModule = PluginUtil.getReleaseModule(e.getProject(), true);
@@ -45,6 +45,9 @@ public class CreateModuleAndLinkAppAction extends LinkAppAction {
 					createLink(releaseModule, file);
 				}
 			}
+			if (message.length() > 0) {
+				PluginUtil.showNotification(e, message.toString());
+			}
 		}
 	}
 
@@ -52,8 +55,8 @@ public class CreateModuleAndLinkAppAction extends LinkAppAction {
 	public void update(AnActionEvent e) {
 		String flag = "/apps/";
 		Module appsModule = ModuleManager.getInstance(e.getProject()).findModuleByName("apps");
-		VirtualFile[] data = DataKeys.VIRTUAL_FILE_ARRAY.getData(e.getDataContext());
-		VirtualFile file = DataKeys.VIRTUAL_FILE.getData(e.getDataContext());
+		VirtualFile[] data = CommonDataKeys.VIRTUAL_FILE_ARRAY.getData(e.getDataContext());
+		VirtualFile file = CommonDataKeys.VIRTUAL_FILE.getData(e.getDataContext());
 		if (file == null) {
 			e.getPresentation().setVisible(false);
 		} else {
@@ -78,6 +81,9 @@ public class CreateModuleAndLinkAppAction extends LinkAppAction {
 		String filePath = file.getPath();
 		if (file.getName().startsWith("_bpm")) {
 			e.getPresentation().setVisible(false);
+			return;
+		}
+		if (checkManifestXml(e, file)) {
 			return;
 		}
 		if (filePath.contains(flag) && appsModule != null && !filePath.contains("release/")) {

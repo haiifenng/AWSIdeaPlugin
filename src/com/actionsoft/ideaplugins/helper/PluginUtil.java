@@ -28,6 +28,7 @@ import com.intellij.openapi.roots.libraries.LibraryTable;
 import com.intellij.openapi.roots.libraries.LibraryTablesRegistrar;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.vfs.JarFileSystem;
+import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.Processor;
 
@@ -175,6 +176,9 @@ public class PluginUtil {
 	}
 
 	public static boolean isAvailableAWSModule(Module module) {
+		if (module == null) {
+			return false;
+		}
 		String name = module.getName();
 		if (PluginUtil.isExcludeModule(name)) {
 			return false;
@@ -192,9 +196,25 @@ public class PluginUtil {
 	}
 
 	public static boolean isExcludeModule(String name) {
-		String[] excludes = { "doc", "release", "aws-all", "aws", "apps", "web", "h5designer", "aws-security", "aws-schema" };
+		String[] excludes = { "doc", "release", "aws-all", "aws", "apps", "web", "h5designer", "aws-security", "security", "aws-schema" };
 		List<String> strings = Arrays.asList(excludes);
 		return strings.contains(name);
+	}
+
+	public static boolean isExcludeModule(Module module) {
+		VirtualFile file = module.getModuleFile();
+		if (file == null) {
+			return false;
+		}
+		VirtualFile srcMainPath = LocalFileSystem.getInstance().refreshAndFindFileByIoFile(new File(file.getParent().getPath(), "src/main/java"));
+		VirtualFile srcPath = LocalFileSystem.getInstance().refreshAndFindFileByIoFile(new File(file.getParent().getPath(), "src"));
+		if (srcMainPath != null && srcMainPath.exists()) {
+			return false;
+		}
+		if (srcPath != null && srcPath.exists()) {
+			return false;
+		}
+		return true;
 	}
 
 	public static boolean isAWSWebModule(String name) {
@@ -215,6 +235,11 @@ public class PluginUtil {
 			}
 		}
 		return list;
+	}
+
+	public static boolean checkManifestXml(VirtualFile file) {
+		File manifestFile = new File(file.getPath() + "/manifest.xml");
+		return manifestFile.exists();
 	}
 
 }

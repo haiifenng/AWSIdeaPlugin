@@ -9,7 +9,6 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 public class AWSLibraryRefreshAction extends AnAction {
 	@Override
 	public void actionPerformed(AnActionEvent anActionEvent) {
-		System.out.println("dddd");
 		AWSLibraryRefresh r = new AWSLibraryRefresh(anActionEvent.getProject());
 		r.refreshAWSLibrary();
 	}

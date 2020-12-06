@@ -71,9 +71,10 @@ public class AWSModuleDependencies {
 	 * @return
 	 */
 	public String updateDependencies(Module module) {
-		if (PluginUtil.isExcludeModule(module.getName())) {
+		/*if (PluginUtil.isExcludeModule(module.getName()) || PluginUtil.isExcludeModule(module)) {
 			return "";
-		} else if (PluginUtil.isAWSWebModule(module.getName())) {
+		} else */
+		if (PluginUtil.isAWSWebModule(module.getName())) {
 			return updateWebModuleDependencies(module);
 		} else if (module.getName().equals("aws-platform-upgrade")) {
 			return updateUpgradeModuleDependencies(module);
@@ -86,77 +87,94 @@ public class AWSModuleDependencies {
 		Module[] modules = ModuleManager.getInstance(project).getSortedModules();
 		ModuleWithDependenciesScope scope = (ModuleWithDependenciesScope) module.getModuleWithDependenciesAndLibrariesScope(true);
 		final ModifiableRootModel modifiableModel = ModuleRootManager.getInstance(module).getModifiableModel();
-		//		modifiableModel.clear();
-		for (Module tmpModule : modules) {
-			String moduleTypeName = tmpModule.getModuleTypeName();
-			if (!StdModuleTypes.JAVA.getId().equals(moduleTypeName)) {
-				continue;
-			}
-			String name = tmpModule.getName();
-			if (PluginUtil.isAWSWebModule(name)) {
-				continue;
-			}
-			if (PluginUtil.isExcludeModule(name) || name.equals("aws-platform-upgrade")) {
-				continue;
-			}
-			if (!scope.isSearchInModuleContent(tmpModule)) {//判断是否在依赖列表，没有的话加入
-				modifiableModel.addModuleOrderEntry(tmpModule);
-			}
-		}
-
-		final LibraryTable projectTable = LibraryTablesRegistrar.getInstance().getLibraryTable(project);
-		Library aws_lib = projectTable.getLibraryByName(PluginConst.PLUGIN_AWS_LIBRARY_NAME);
-		if (aws_lib == null) {//判断当前project有没有aws_lib这个库
-			Messages.showMessageDialog(project, "当前Project没有“aws_lib”的库，请使用“Tools->AWS Libraries 更新”菜单更新", "提示", Messages.getErrorIcon());
-		}
 
 		final List<OrderEntry> moduleEntries = new ArrayList<>();//遍历出module的列表
 		final List<OrderEntry> awslibEntry = new ArrayList<>();//遍历出aws_lib的列表
 		final List<OrderEntry> invalidEntry = new ArrayList<>();//无效的module
-		modifiableModel.orderEntries().forEach(new Processor<OrderEntry>() {
-			@Override
-			public boolean process(OrderEntry orderEntry) {
-				if (PluginConst.PLUGIN_AWS_LIBRARY_NAME.equals(orderEntry.getPresentableName())) {
-					awslibEntry.add(orderEntry);
-				} else {
-					moduleEntries.add(orderEntry);
+
+		if (!PluginUtil.isExcludeModule(module)) {
+			for (Module tmpModule : modules) {
+				String moduleTypeName = tmpModule.getModuleTypeName();
+				if (!StdModuleTypes.JAVA.getId().equals(moduleTypeName)) {
+					continue;
 				}
-				if (orderEntry instanceof ModuleOrderEntryImpl) {
-					if (((ModuleOrderEntryImpl) orderEntry).getModule() == null) {
-						invalidEntry.add(orderEntry);
+				String name = tmpModule.getName();
+				if (PluginUtil.isAWSWebModule(name)) {
+					continue;
+				}
+				if (PluginUtil.isExcludeModule(name) || PluginUtil.isExcludeModule(tmpModule)) {
+					continue;
+				}
+				if (name.equals("aws-platform-upgrade")) {
+					continue;
+				}
+				if (!scope.isSearchInModuleContent(tmpModule)) {//判断是否在依赖列表，没有的话加入
+					modifiableModel.addModuleOrderEntry(tmpModule);
+				}
+			}
+
+			final LibraryTable projectTable = LibraryTablesRegistrar.getInstance().getLibraryTable(project);
+			Library aws_lib = projectTable.getLibraryByName(PluginConst.PLUGIN_AWS_LIBRARY_NAME);
+			if (aws_lib == null) {//判断当前project有没有aws_lib这个库
+				Messages.showMessageDialog(project, "当前Project没有“aws_lib”的库，请使用“Tools->AWS Libraries 更新”菜单更新", "提示", Messages.getErrorIcon());
+			}
+
+			modifiableModel.orderEntries().forEach(new Processor<OrderEntry>() {
+				@Override
+				public boolean process(OrderEntry orderEntry) {
+					if (PluginConst.PLUGIN_AWS_LIBRARY_NAME.equals(orderEntry.getPresentableName())) {
+						awslibEntry.add(orderEntry);
 					} else {
-						// 不是java工程、排除的、web工程都移走
-						Module tmp = ((ModuleOrderEntryImpl) orderEntry).getModule();
-						if (!StdModuleTypes.JAVA.getId().equals(tmp.getModuleTypeName()) || PluginUtil.isExcludeModule(tmp.getName()) || PluginUtil.isAWSWebModule(tmp.getName())) {
+						moduleEntries.add(orderEntry);
+					}
+					if (orderEntry instanceof ModuleOrderEntryImpl) {
+						if (((ModuleOrderEntryImpl) orderEntry).getModule() == null) {
 							invalidEntry.add(orderEntry);
+						} else {
+							// 不是java工程、排除的、web工程都移走
+							Module tmp = ((ModuleOrderEntryImpl) orderEntry).getModule();
+							if (!StdModuleTypes.JAVA.getId().equals(tmp.getModuleTypeName()) || PluginUtil.isExcludeModule(tmp.getName()) || PluginUtil.isExcludeModule(tmp) || PluginUtil.isAWSWebModule(tmp.getName())) {
+								invalidEntry.add(orderEntry);
+							}
 						}
 					}
+					return true;
 				}
-				return true;
+			});
+			//把module排序一下
+			Collections.sort(moduleEntries, new Comparator<OrderEntry>() {
+				@Override
+				public int compare(OrderEntry o1, OrderEntry o2) {
+					return o1.getPresentableName().compareTo(o2.getPresentableName());
+				}
+			});
+			//aws_lib的保证放到最后
+			moduleEntries.addAll(awslibEntry);
+			modifiableModel.rearrangeOrderEntries(moduleEntries.toArray(new OrderEntry[0]));
+			//移除无效的module
+			if (invalidEntry.size() > 0) {
+				for (OrderEntry orderEntry : invalidEntry) {
+					modifiableModel.removeOrderEntry(orderEntry);
+				}
 			}
-		});
-		//把module排序一下
-		Collections.sort(moduleEntries, new Comparator<OrderEntry>() {
-			@Override
-			public int compare(OrderEntry o1, OrderEntry o2) {
-				return o1.getPresentableName().compareTo(o2.getPresentableName());
+			if (module.getModuleFile() != null && module.getModuleFile().getParent() != null) {
+				PluginUtil.updateModuleLibraries(project, module, new String[] { module.getModuleFile().getParent().getPath() + "/lib" });
 			}
-		});
-		//aws_lib的保证放到最后
-		moduleEntries.addAll(awslibEntry);
-		modifiableModel.rearrangeOrderEntries(moduleEntries.toArray(new OrderEntry[0]));
-		//移除无效的module
-		if (invalidEntry.size() > 0) {
-			for (OrderEntry orderEntry : invalidEntry) {
+
+			if (awslibEntry.size() == 0) {//如果之前没遍历出来aws_lib，说明没有，加入到最后
+				modifiableModel.addLibraryEntry(aws_lib);
+			}
+		} else {
+			modifiableModel.orderEntries().forEach(new Processor<OrderEntry>() {
+				@Override
+				public boolean process(OrderEntry orderEntry) {
+					moduleEntries.add(orderEntry);
+					return true;
+				}
+			});
+			for (OrderEntry orderEntry : moduleEntries) {
 				modifiableModel.removeOrderEntry(orderEntry);
 			}
-		}
-		if (module.getModuleFile() != null && module.getModuleFile().getParent() != null) {
-			PluginUtil.updateModuleLibraries(project, module, new String[] { module.getModuleFile().getParent().getPath() + "/lib" });
-		}
-
-		if (awslibEntry.size() == 0) {//如果之前没遍历出来aws_lib，说明没有，加入到最后
-			modifiableModel.addLibraryEntry(aws_lib);
 		}
 		if (modifiableModel.isChanged()) {
 			ApplicationManager.getApplication().runWriteAction(new Runnable() {

@@ -7,7 +7,7 @@ import com.actionsoft.ideaplugins.helper.PluginUtil;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DataContext;
-import com.intellij.openapi.actionSystem.DataKeys;
+import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.vfs.LocalFileSystem;
@@ -21,7 +21,7 @@ public class LinkAppAction extends AnAction {
 	@Override
 	public void actionPerformed(AnActionEvent e) {
 		DataContext dataContext = e.getDataContext();
-		VirtualFile[] data = DataKeys.VIRTUAL_FILE_ARRAY.getData(e.getDataContext());
+		VirtualFile[] data = CommonDataKeys.VIRTUAL_FILE_ARRAY.getData(e.getDataContext());
 		if (data != null) {
 			StringBuilder message = new StringBuilder();
 			Module releaseModule = PluginUtil.getReleaseModule(e.getProject(), true);
@@ -72,8 +72,8 @@ public class LinkAppAction extends AnAction {
 
 	@Override
 	public void update(AnActionEvent e) {
-		VirtualFile[] data = DataKeys.VIRTUAL_FILE_ARRAY.getData(e.getDataContext());
-		VirtualFile file = DataKeys.VIRTUAL_FILE.getData(e.getDataContext());
+		VirtualFile[] data = CommonDataKeys.VIRTUAL_FILE_ARRAY.getData(e.getDataContext());
+		VirtualFile file = CommonDataKeys.VIRTUAL_FILE.getData(e.getDataContext());
 		if (file == null) {
 			e.getPresentation().setVisible(false);
 		} else {
@@ -113,6 +113,9 @@ public class LinkAppAction extends AnAction {
 			e.getPresentation().setVisible(false);
 			return;
 		}
+		if (checkManifestXml(e, file)) {
+			return;
+		}
 		if (filePath.contains(flag) && appsModule != null) {
 			String appId = filePath.substring(filePath.indexOf(flag) + flag.length());
 			//说明是子文件夹或文件
@@ -122,6 +125,15 @@ public class LinkAppAction extends AnAction {
 		} else {
 			e.getPresentation().setVisible(false);
 		}
+	}
+
+	protected boolean checkManifestXml(AnActionEvent e, VirtualFile file) {
+		File manifestFile = new File(file.getPath()+"/manifest.xml");
+		if (!manifestFile.exists()) {
+			e.getPresentation().setVisible(false);
+			return true;
+		}
+		return false;
 	}
 
 	protected boolean checkFileExist(AnActionEvent e, VirtualFile file) {
