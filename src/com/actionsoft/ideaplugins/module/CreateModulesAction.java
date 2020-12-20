@@ -62,33 +62,17 @@ public class CreateModulesAction extends AnAction {
 		String flagAWS = "/aws/modules/";
 		String flagSec = "/aws-security/modules/";
 		String filePath = file.getPath();
-		Module awsModule = null;
-		try {
-			if (filePath.contains(flagAWS)) {
-				awsModule = ModuleManager.getInstance(e.getProject()).findModuleByName("aws");
-			}
-		} catch (Exception exception) {
-			exception.printStackTrace();
-		}
-		Module secModule = null;
-		try {
-			if (filePath.contains(flagSec)) {
-				secModule = ModuleManager.getInstance(e.getProject()).findModuleByName("aws-security");
-			}
-		} catch (Exception exception) {
-			exception.printStackTrace();
-		}
 		if (file.getName().startsWith("_bpm")) {
 			e.getPresentation().setVisible(false);
 			return;
 		}
 		if (PluginUtil.checkManifestXml(file)) {
-			e.getPresentation().setText(isMulti ? "Create Modules" : getButtonName(file.getName()));
+			checkName(e, "", isMulti, file);
 		} else if (filePath.contains(flag)) {
 			checkName(e, flag, isMulti, file);
-		} else if (filePath.contains(flagAWS) && awsModule != null) {
+		} else if (filePath.contains(flagAWS)) {
 			checkName(e, flagAWS, isMulti, file);
-		} else if (filePath.contains(flagSec) && secModule != null) {
+		} else if (filePath.contains(flagSec)) {
 			checkName(e, flagSec, isMulti, file);
 		} else {
 			e.getPresentation().setVisible(false);
@@ -103,11 +87,14 @@ public class CreateModulesAction extends AnAction {
 			e.getPresentation().setVisible(false);
 			return;
 		}
-		String moduleId = filePath.substring(filePath.indexOf(flag) + flag.length());
-		if (moduleId.contains("/")) {
-			//说明是子文件夹或文件
-			e.getPresentation().setVisible(false);
-			return;
+
+		if (StringUtil.isNotEmpty(flag)) {
+			String moduleId = filePath.substring(filePath.indexOf(flag) + flag.length());
+			if (moduleId.contains("/")) {
+				//说明是子文件夹或文件
+				e.getPresentation().setVisible(false);
+				return;
+			}
 		}
 		e.getPresentation().setText(isMulti ? "Create Modules" : getButtonName(fileName));
 	}
