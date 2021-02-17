@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com-actionsoft-aws-idea-plugin</id>
     <name>AWS Developer Plugin</name>
-    <version>2.2.6</version>
+    <version>2.2.7</version>
     <vendor email="zhanghf@actionsoft.com.cn" url="http://www.actionsoft.com.cn">北京炎黄盈动科技发展有限责任公司</vendor>
 
     <description><![CDATA[
@@ -26,6 +26,10 @@
     ]]></description>
 
     <change-notes><![CDATA[
+        2.2.7：2021.02.17
+        <ol>
+        <li>优化右键菜单的展示。</li>
+        </ol>
         2.2.6：2020.12.06
         <ol>
         <li>优化判断Module的机制，排除非Java的Module。</li>

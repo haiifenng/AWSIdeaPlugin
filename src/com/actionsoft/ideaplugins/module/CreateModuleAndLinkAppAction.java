@@ -83,14 +83,22 @@ public class CreateModuleAndLinkAppAction extends LinkAppAction {
 			e.getPresentation().setVisible(false);
 			return;
 		}
+		if (checkFileExist(e, file)) {
+			e.getPresentation().setVisible(false);
+			return;
+		}
 		if (checkManifestXml(e, file)) {
 			return;
 		}
 		if (filePath.contains(flag) && appsModule != null && !filePath.contains("release/")) {
-			Module moduleByName = ModuleManager.getInstance(e.getProject()).findModuleByName(fileName);
-			if (moduleByName != null) {
-				e.getPresentation().setVisible(false);
-				return;
+			try {
+				Module moduleByName = ModuleManager.getInstance(e.getProject()).findModuleByName(fileName);
+				if (moduleByName != null) {
+					e.getPresentation().setVisible(false);
+					return;
+				}
+			} catch (java.lang.Exception exception) {
+				exception.printStackTrace();
 			}
 			String appId = filePath.substring(filePath.indexOf(flag) + flag.length());
 			//说明是子文件夹或文件

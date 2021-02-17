@@ -82,10 +82,14 @@ public class CreateModulesAction extends AnAction {
 	private void checkName(AnActionEvent e, String flag, boolean isMulti, VirtualFile file) {
 		String fileName = file.getName();
 		String filePath = file.getPath();
-		Module moduleByName = ModuleManager.getInstance(e.getProject()).findModuleByName(fileName);
-		if (moduleByName != null) {
-			e.getPresentation().setVisible(false);
-			return;
+		try {
+			Module moduleByName = ModuleManager.getInstance(e.getProject()).findModuleByName(fileName);
+			if (moduleByName != null) {
+				e.getPresentation().setVisible(false);
+				return;
+			}
+		} catch (java.lang.Exception exception) {
+			exception.printStackTrace();
 		}
 
 		if (StringUtil.isNotEmpty(flag)) {
